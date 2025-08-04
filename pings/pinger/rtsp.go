@@ -78,9 +78,9 @@ func (m *RTSPManager) Start() (map[string]bool, map[string]string) {
 			}
 
 			if found {
-				m.setResult(url, true, "✅ H264 найден")
+				m.setResult(url, true, "")
 			} else {
-				m.setResult(url, false, "❌ H264 не найден")
+				m.setResult(url, true, "❌ H264 не найден")
 			}
 		}(url)
 	}
