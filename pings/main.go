@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"os"
 	"strings"
+	"test/excel"
 	"test/models"
 	"test/pinger"
 	"time"
@@ -54,9 +55,9 @@ func Ping() error {
 	dubles := make(map[string]int)
 	rtsps := make([]string, 0)
 	rtspCamera := make(map[string][]models.Camera)
-	ipFileName := generateExcelFilename(int(time.Now().Month()))
-	if !fileExists(ipFileName) {
-		err := CreateMainExcelFile(ipFileName)
+	ipFileName := excel.GenerateExcelFilename(int(time.Now().Month()))
+	if !excel.FileExists(ipFileName) {
+		err := excel.CreateMainExcelFile(ipFileName)
 		if err != nil {
 			fmt.Println("Error creating Excel file:", err)
 			return err
@@ -95,7 +96,7 @@ func Ping() error {
 	for ip, comment := range comments {
 		slog.Debug(fmt.Sprintf("%s: %s\n", ip, comment))
 	}
-	if err := infoToExcel(results, comments, rtspCamera); err != nil {
+	if err := excel.InfoToExcel(results, comments, rtspCamera); err != nil {
 		return fmt.Errorf("can't write info to excel with error %s", err.Error())
 	}
 	return nil
