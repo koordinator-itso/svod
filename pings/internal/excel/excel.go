@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
-	"test/models"
+	"test/internal/models"
 	"time"
 
 	"github.com/xuri/excelize/v2"

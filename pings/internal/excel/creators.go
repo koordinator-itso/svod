@@ -3,7 +3,7 @@ package excel
 import (
 	"fmt"
 	"log/slog"
-	"test/models"
+	"test/internal/models"
 	"time"
 
 	"github.com/xuri/excelize/v2"
