@@ -5,9 +5,9 @@ import (
 	"log/slog"
 	"os"
 	"strings"
-	"test/excel"
-	"test/models"
-	"test/pinger"
+	"test/internal/excel"
+	"test/internal/models"
+	"test/internal/pinger"
 	"time"
 
 	"github.com/xuri/excelize/v2"
