@@ -47,8 +47,8 @@ func (m *RTSPManager) Start() (map[string]bool, map[string]string) {
 			}
 
 			client := gortsplib.Client{
-				ReadTimeout:  5 * time.Second,
-				WriteTimeout: 5 * time.Second,
+				ReadTimeout:  20 * time.Second,
+				WriteTimeout: 20 * time.Second,
 			}
 			defer client.Close()
 

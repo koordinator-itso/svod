@@ -129,7 +129,7 @@ func CreateExcelFile(rtspCamera map[string][]models.Camera) error {
 	if err := f.SetCellValue(infoSheet, "B1", "Объект"); err != nil {
 		return err
 	}
-	if err := f.SetCellValue(infoSheet, "C1", "IP"); err != nil {
+	if err := f.SetCellValue(infoSheet, "C1", "RTSP"); err != nil {
 		return err
 	}
 	for _, cameras := range rtspCamera {
@@ -141,10 +141,7 @@ func CreateExcelFile(rtspCamera map[string][]models.Camera) error {
 			if err := f.SetCellValue(infoSheet, fmt.Sprintf("B%d", row), camera.Location); err != nil {
 				return err
 			}
-			if err := f.SetCellValue(infoSheet, fmt.Sprintf("C%d", row), camera.Ip); err != nil {
-				return err
-			}
-			if err := f.SetCellValue(infoSheet, fmt.Sprintf("D%d", row), camera.Rtsp); err != nil {
+			if err := f.SetCellValue(infoSheet, fmt.Sprintf("C%d", row), camera.Rtsp); err != nil {
 				return err
 			}
 			row++

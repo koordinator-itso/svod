@@ -76,13 +76,13 @@ func Ping() error {
 			continue
 		}
 
-		cameras = append(cameras, models.Camera{Name: row[1], Ip: strings.TrimSpace(row[3]), Location: row[2], Rtsp: row[0]})
+		cameras = append(cameras, models.Camera{Name: row[1], Ip: strings.TrimSpace(row[3]), Location: row[2], Rtsp: strings.TrimSpace(row[0])})
 		if dubles[row[1]] > 0 {
 			fmt.Println(row[1])
 		} else {
 			dubles[row[1]]++
 		}
-		rtspCamera[row[0]] = append(rtspCamera[row[0]], models.Camera{Name: row[1], Ip: strings.TrimSpace(row[3]), Location: row[2], Rtsp: row[0]})
+		rtspCamera[row[0]] = append(rtspCamera[row[0]], models.Camera{Name: row[1], Ip: strings.TrimSpace(row[3]), Location: row[2], Rtsp: strings.TrimSpace(row[0])})
 	}
 	for rtsp, _ := range rtspCamera {
 		rtsps = append(rtsps, rtsp)

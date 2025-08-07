@@ -60,14 +60,14 @@ func InfoToExcel(results map[string]bool, comments map[string]string, rtspCamera
 		return fmt.Errorf("can't set cell value, with error %s", err.Error())
 	}
 	for row := 2; row <= 5000; row++ {
-		name, err := infoFile.GetCellValue(infoSheet, fmt.Sprintf("B%d", row))
+		name, err := infoFile.GetCellValue(infoSheet, fmt.Sprintf("A%d", row))
 		if err != nil {
 			return fmt.Errorf("can't get cell value, with error %s", err.Error())
 		}
 		if name == "" {
 			break
 		}
-		rtsp, err := infoFile.GetCellValue(infoSheet, fmt.Sprintf("D%d", row))
+		rtsp, err := infoFile.GetCellValue(infoSheet, fmt.Sprintf("C%d", row))
 		if err != nil {
 			return fmt.Errorf("can't get cell value, with error %s", err.Error())
 		}
