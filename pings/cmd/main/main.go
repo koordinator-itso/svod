@@ -5,9 +5,9 @@ import (
 	"log/slog"
 	"os"
 	"strings"
-	"test/internal/excel"
 	"test/internal/models"
 	"test/internal/pinger"
+	"test/internal/views/excel"
 	"time"
 
 	"github.com/xuri/excelize/v2"
@@ -17,6 +17,11 @@ const (
 	mainSheet = "Основной файл"
 	infoSheet = "Информация"
 )
+
+func InfoFileName() string {
+	now := time.Now()
+	return fmt.Sprintf("./archive/архив_%02d.%02d.%d.xlsx", now.Day(), now.Month(), now.Year())
+}
 
 func main() {
 	logFile, err := os.OpenFile("./archive/logs/app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
@@ -56,8 +61,9 @@ func Ping() error {
 	rtsps := make([]string, 0)
 	rtspCamera := make(map[string][]models.Camera)
 	ipFileName := excel.GenerateExcelFilename(int(time.Now().Month()))
+	oldIpFilename := excel.GenerateExcelFilename(int(time.Now().Month()) - 1)
 	if !excel.FileExists(ipFileName) {
-		err := excel.CreateMainExcelFile(ipFileName)
+		err := excel.CreateMainExcelFile(ipFileName, oldIpFilename, mainSheet)
 		if err != nil {
 			fmt.Println("Error creating Excel file:", err)
 			return err
@@ -96,7 +102,7 @@ func Ping() error {
 	for ip, comment := range comments {
 		slog.Debug(fmt.Sprintf("%s: %s\n", ip, comment))
 	}
-	if err := excel.InfoToExcel(results, comments, rtspCamera); err != nil {
+	if err := excel.InfoToExcel(results, comments, rtspCamera, infoSheet, InfoFileName()); err != nil {
 		return fmt.Errorf("can't write info to excel with error %s", err.Error())
 	}
 	return nil
