@@ -1,21 +1,20 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log/slog"
 	"os"
-	"strings"
-	"test/internal/models"
+	"test/internal/config"
+	"test/internal/db/postgres"
 	"test/internal/pinger"
-	"test/internal/views/excel"
 	"time"
-
-	"github.com/xuri/excelize/v2"
 )
 
 const (
-	mainSheet = "Основной файл"
-	infoSheet = "Информация"
+	mainSheet  = "Основной файл"
+	infoSheet  = "Информация"
+	configPath = "./pings/config/config.yaml"
 )
 
 func InfoFileName() string {
@@ -23,6 +22,30 @@ func InfoFileName() string {
 	return fmt.Sprintf("./archive/архив_%02d.%02d.%d.xlsx", now.Day(), now.Month(), now.Year())
 }
 
+func main() {
+	logFile, err := os.OpenFile("./archive/logs/app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		panic("не удалось открыть файл логов: " + err.Error())
+	}
+	handler := slog.NewTextHandler(logFile, &slog.HandlerOptions{
+		Level: slog.LevelInfo,
+	})
+
+	logger := slog.New(handler)
+	conf := config.LoadConfig(configPath, logger)
+	if err != nil {
+		panic("не удалось загрузить конфигурацию: " + err.Error())
+	}
+	slog.SetDefault(logger)
+	repo := postgres.NewRepository(context.Background(), conf.DB.DSN)
+
+	rtspManager := pinger.NewRTSPManager(repo)
+	if err := rtspManager.Start(logger); err != nil {
+		panic("не удалось запустить менеджер RTSP: " + err.Error())
+	}
+}
+
+/*
 func main() {
 	logFile, err := os.OpenFile("./archive/logs/app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
@@ -37,22 +60,10 @@ func main() {
 
 	slog.SetDefault(logger)
 
-	err = Ping()
-	if err != nil {
-		slog.Error("Ping error", "error", err.Error())
-	}
-	ticker := time.NewTicker(30 * time.Minute)
-	for {
-		select {
-		case <-ticker.C:
-			err := Ping()
-			if err != nil {
-				slog.Error("Ping error", "error", err.Error())
-			}
-		}
-	}
+
 
 }
+
 
 func Ping() error {
 	slog.Info("Start ping")
@@ -107,3 +118,4 @@ func Ping() error {
 	}
 	return nil
 }
+*/

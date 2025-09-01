@@ -15,8 +15,7 @@ type PingManager struct {
 }
 
 const (
-	pingCount        = 5
-	concurrencyLimit = 300
+	pingCount = 5
 )
 
 func NewPingManager(ips []string) (*PingManager, error) {
