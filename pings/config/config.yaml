@@ -1,0 +1,12 @@
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+db:
+  dsn: "postgres://postgres:password@localhost:5432/mydb?sslmode=disable"
+  max_conns: 10
+
+excel:
+  templates_path: "./templates"
+  output_archive_path: "./output"
+  output_logs_path: "./logs"
